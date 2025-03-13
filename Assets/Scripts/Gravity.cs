@@ -2,15 +2,22 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    Rigidbody rb;
+    const float G = 0.0674f;
+
+    private void Awake()
     {
-        
+        rb = GetComponent<Rigidbody>();
+    }
+    void Attract(Gravity other)
+    {
+        Rigidbody otherRb = other.rb;
+        Vector3 direction = rb.position - otherRb.position;
+        float distance = direction.magnitude;
+        float forceMagnitude = G * (rb.mass * otherRb.mass) /Mathf.Pow(distance, 2);
+        Vector3 finalForce = forceMagnitude * direction.normalized;
+
+        otherRb.AddForce(finalForce);
     }
 }
